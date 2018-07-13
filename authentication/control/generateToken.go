@@ -16,7 +16,6 @@ func generateToken(userUUID string) (string, error) {
 
 	tokenString, err := token.SignedString(rsa.PrivateKey)
 	if err != nil {
-		panic(err)
 		return "", err
 	}
 	return tokenString, nil

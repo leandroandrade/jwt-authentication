@@ -22,8 +22,9 @@ func NewHandler(m *mgo.Session) *Handler {
 func (h Handler) Login(writer http.ResponseWriter, request *http.Request) {
 	var user model.User
 	if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
-		log.Println("ERR: ", err)
 		writer.WriteHeader(http.StatusBadRequest)
+
+		log.Println("ERR: ", err)
 		return
 	}
 
@@ -35,15 +36,17 @@ func (h Handler) Login(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (h Handler) RefreshToken(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
-	var user model.User
-	if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
-		log.Println("ERR: ", err)
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	//var user model.User
+	//if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
+	//	log.Println("ERR: ", err)
+	//	writer.WriteHeader(http.StatusBadRequest)
+	//	return
+	//}
 
+	token, responseStatus := control.Refresh(request, h.mongo.Copy())
 	writer.Header().Set("Content-Type", "application/json")
-	writer.Write(control.Refresh(user))
+	writer.WriteHeader(responseStatus)
+	writer.Write(token)
 }
 
 func (h Handler) Logout(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
