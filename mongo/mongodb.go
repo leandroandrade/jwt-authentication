@@ -4,7 +4,6 @@ import (
 	"gopkg.in/mgo.v2"
 	"log"
 	"sync"
-	"fmt"
 )
 
 var (
@@ -14,7 +13,7 @@ var (
 
 func New() *mgo.Session {
 	once.Do(func() {
-		fmt.Println("Initializing MongoDB connection...")
+		log.Println("Initializing MongoDB connection...")
 
 		var err error
 

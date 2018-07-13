@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	//mongo := database.NewMongoInstance()
 	handler := boundary.NewHandler(mongo.New())
 
 	router := mux.NewRouter().StrictSlash(true)
