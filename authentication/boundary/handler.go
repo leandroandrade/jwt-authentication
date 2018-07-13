@@ -36,13 +36,6 @@ func (h Handler) Login(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (h Handler) RefreshToken(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
-	//var user model.User
-	//if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
-	//	log.Println("ERR: ", err)
-	//	writer.WriteHeader(http.StatusBadRequest)
-	//	return
-	//}
-
 	token, responseStatus := control.Refresh(request, h.mongo.Copy())
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(responseStatus)
