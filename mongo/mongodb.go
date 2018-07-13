@@ -11,7 +11,10 @@ var (
 	session *mgo.Session
 )
 
-func New() *mgo.Session {
+type MongoDatabase struct {
+}
+
+func New() *MongoDatabase {
 	once.Do(func() {
 		log.Println("Initializing MongoDB connection...")
 
@@ -23,5 +26,9 @@ func New() *mgo.Session {
 			log.Fatal(err)
 		}
 	})
-	return session
+	return &MongoDatabase{}
+}
+
+func (MongoDatabase) Get() *mgo.Session {
+	return session.Copy()
 }

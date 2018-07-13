@@ -16,7 +16,7 @@ func RequireToken(rw http.ResponseWriter, req *http.Request, next http.HandlerFu
 		return
 	}
 
-	if err = isLogout(mongo.New().Copy(), token.Raw); err != nil {
+	if err = isLogout(mongo.New().Get(), token.Raw); err != nil {
 		writeError(rw, err)
 		return
 	}

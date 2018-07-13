@@ -6,16 +6,16 @@ import (
 	"log"
 	"github.com/leandroandrade/jwt-authentication/authentication/model"
 	"github.com/leandroandrade/jwt-authentication/authentication/control"
-	"gopkg.in/mgo.v2"
+	"github.com/leandroandrade/jwt-authentication/mongo"
 )
 
 type Handler struct {
-	mongo *mgo.Session
+	mongo *mongo.MongoDatabase
 }
 
-func NewHandler(m *mgo.Session) *Handler {
+func NewHandler(db *mongo.MongoDatabase) *Handler {
 	return &Handler{
-		mongo: m,
+		mongo: db,
 	}
 }
 
@@ -28,7 +28,7 @@ func (h Handler) Login(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	token, responseStatus := control.Login(user, h.mongo.Copy())
+	token, responseStatus := control.Login(user, h.mongo.Get())
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(responseStatus)
 	writer.Write(token)
@@ -36,14 +36,14 @@ func (h Handler) Login(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (h Handler) RefreshToken(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
-	token, responseStatus := control.Refresh(request, h.mongo.Copy())
+	token, responseStatus := control.Refresh(request, h.mongo.Get())
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(responseStatus)
 	writer.Write(token)
 }
 
 func (h Handler) Logout(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
-	err := control.Logout(request, h.mongo.Copy())
+	err := control.Logout(request, h.mongo.Get())
 	writer.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
