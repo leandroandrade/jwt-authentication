@@ -6,14 +6,14 @@ import (
 	"log"
 	"github.com/leandroandrade/jwt-authentication/authentication/model"
 	"github.com/leandroandrade/jwt-authentication/authentication/control"
-	"github.com/leandroandrade/jwt-authentication/mongo"
+	"github.com/leandroandrade/jwt-authentication/database"
 )
 
 type Handler struct {
-	mongo *mongo.MongoDatabase
+	mongo *database.MongoDatabase
 }
 
-func NewHandler(db *mongo.MongoDatabase) *Handler {
+func NewHandler(db *database.MongoDatabase) *Handler {
 	return &Handler{
 		mongo: db,
 	}

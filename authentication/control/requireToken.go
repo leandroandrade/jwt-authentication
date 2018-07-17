@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"github.com/leandroandrade/jwt-authentication/mongo"
+	"github.com/leandroandrade/jwt-authentication/database"
 	"errors"
 )
 
@@ -16,7 +16,7 @@ func RequireToken(rw http.ResponseWriter, req *http.Request, next http.HandlerFu
 		return
 	}
 
-	if err = isLogout(mongo.New().Get(), token.Raw); err != nil {
+	if err = isLogout(database.New().Get(), token.Raw); err != nil {
 		writeError(rw, err)
 		return
 	}

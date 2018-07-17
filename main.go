@@ -6,11 +6,11 @@ import (
 	"github.com/codegangsta/negroni"
 	"github.com/leandroandrade/jwt-authentication/authentication/control"
 	"github.com/leandroandrade/jwt-authentication/authentication/boundary"
-	"github.com/leandroandrade/jwt-authentication/mongo"
+	"github.com/leandroandrade/jwt-authentication/database"
 )
 
 func main() {
-	handler := boundary.NewHandler(mongo.New())
+	handler := boundary.NewHandler(database.New())
 
 	router := mux.NewRouter().StrictSlash(true)
 
